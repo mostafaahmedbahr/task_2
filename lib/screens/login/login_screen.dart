@@ -36,6 +36,9 @@ class LoginScreen extends StatelessWidget {
         var loginCubit = LoginCubit.get(context);
         return SafeArea(
           child: Scaffold(
+            appBar: AppBar(
+              title: const Text("Login In"),
+            ),
             body: Form(
               key: formKey,
               child: Padding(

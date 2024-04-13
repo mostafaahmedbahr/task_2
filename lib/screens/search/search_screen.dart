@@ -45,7 +45,7 @@ class SearchScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              searchCubit.booksList.isEmpty ?
+              searchCubit.booksList.isEmpty?
               const SimmerLoading(
                 height: 150,
                 width: double.infinity,

@@ -25,19 +25,11 @@ class SearchCubit extends Cubit<SearchStates> {
 
   var searchCon = TextEditingController();
 
-  List<String> names = List.from(allNames);
 
-  void filterNames(String query) {
-    if (query.isEmpty) {
-      names = List.from(allNames);
-    } else {
-      names = allNames.where((name) => name.toLowerCase().contains(query.toLowerCase())).toList();
-    }
-    emit(SearchLoaded());
-  }
 
   List<AllBooksModel> booksListSearchResults = [];
   void searchBook(String query) {
+
     if (query.isEmpty) {
       booksListSearchResults = List.from(booksList);
     }
@@ -65,6 +57,8 @@ class SearchCubit extends Cubit<SearchStates> {
     FirebaseFirestore.instance.collection("AllBooks").get().then((value) {
       booksList = querySnapshot.docs.map((doc) => AllBooksModel.fromMap(doc.data() as Map<String, dynamic>)).toList();
       print(booksList);
+      booksListSearchResults = booksList;
+      print(booksListSearchResults);
       emit(GetAllBooksListSuccessState());
     }).catchError((error) {
       print("error in get all Books data ${error.toString()}");
