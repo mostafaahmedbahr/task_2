@@ -1,11 +1,12 @@
 import 'dart:developer';
 import 'dart:io';
- import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:responsive_framework/responsive_wrapper.dart';
 import 'package:responsive_framework/utils/scroll_behavior.dart';
 import 'package:task_2/core/sh.dart';
+import 'package:task_2/firebase_options.dart';
 import 'package:task_2/screens/home/cubit/home_cubit.dart';
 import 'package:task_2/screens/layout/cubit/layout_cubit.dart';
 import 'package:task_2/screens/login/cubit/login_cubit.dart';
@@ -17,12 +18,15 @@ import 'package:task_2/screens/splash/splash_screen.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SharedPreferencesHelper.init();
-  if (Platform.isIOS) {
-    await Firebase.initializeApp();
-  } else if(Platform.isAndroid) {
-    await Firebase.initializeApp();
-  }
-   log("0"*30);
+  // if (Platform.isIOS) {
+  //   await Firebase.initializeApp();
+  // } else if(Platform.isAndroid) {
+  //   await Firebase.initializeApp();
+  // }
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  log("0"*30);
   runApp(const MyApp());
 }
 
