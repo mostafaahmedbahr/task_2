@@ -172,7 +172,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
         ),
       ),
       const SizedBox(height: 50,),
-      Image.asset(model.image!,height: 200,fit: BoxFit.fitWidth, width: double.infinity,),
+      Image.asset(model.image!,height: 200,fit: BoxFit.contain, width: double.infinity,),
       const SizedBox(height: 50,),
       Center(
         child: Text(
