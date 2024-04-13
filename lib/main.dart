@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:responsive_framework/responsive_wrapper.dart';
 import 'package:responsive_framework/utils/scroll_behavior.dart';
+import 'package:task_2/core/sh.dart';
 import 'package:task_2/screens/home/cubit/home_cubit.dart';
 import 'package:task_2/screens/layout/cubit/layout_cubit.dart';
 import 'package:task_2/screens/login/cubit/login_cubit.dart';
@@ -16,6 +17,7 @@ import 'package:task_2/screens/splash/splash_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  SharedPreferencesHelper.init();
   if (Platform.isIOS) {
     await Firebase.initializeApp();
   } else if(Platform.isAndroid) {

@@ -1,6 +1,6 @@
  import 'package:flutter/material.dart';
 import '../../core/utils/app_nav.dart';
-import '../login/login_screen.dart';
+ import '../on_boarding/on_boarding_screen.dart';
 
 
 class SplashScreen extends StatefulWidget {
@@ -27,7 +27,7 @@ class _SplashScreenState extends State<SplashScreen>
   void navigateToAfterSplash() {
     Future.delayed(const Duration(seconds: 3), () {
       AppNav.customNavigator(context: context,
-          screen: const LoginScreen(),
+          screen: const OnBoardingScreen(),
           finish: true);
     });
   }
