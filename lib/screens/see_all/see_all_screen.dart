@@ -33,9 +33,11 @@ class SeeAllScreen extends StatelessWidget {
                   onTap: (){
                     AppNav.customNavigator(context: context,
                       screen: BookDetailsScreen(
+                        booksModel:booksList[index] ,
+                        id: booksList[index].bookId,
                         name: booksList[index].bookName,
                         image:booksList[index].bookImage,
-                        price: booksList[index].bookPrice,
+                        price: "Free",
                         rate:booksList[index].bookRate,
                         authorName: booksList[index].bookAuthorName,
                         url: booksList[index].bookUrl,

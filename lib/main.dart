@@ -7,6 +7,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:responsive_framework/responsive_wrapper.dart';
 import 'package:responsive_framework/utils/scroll_behavior.dart';
 import 'package:task_2/core/sh.dart';
+import 'package:task_2/screens/all_books/cubit/cubit.dart';
+import 'package:task_2/screens/fav/cubit/cubit.dart';
 import 'package:task_2/screens/home/cubit/home_cubit.dart';
 import 'package:task_2/screens/layout/cubit/layout_cubit.dart';
 import 'package:task_2/screens/login/cubit/login_cubit.dart';
@@ -40,7 +42,9 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => RegisterCubit() ),
         BlocProvider(create: (context) => HomeCubit()..getAllBooksDataInHome() ),
         BlocProvider(create: (context) => LoginCubit() ),
+        BlocProvider(create: (context) => FavCubit()..getFavoriteBooks(SharedPreferencesHelper.getData(key: "userId")) ),
         BlocProvider(create: (context) => SearchCubit()..getAllBooksData()),
+        BlocProvider(create: (context) => AllBooksCubit()..getAllBooksDataInAllBooks()),
 
       ],
       child: MaterialApp(

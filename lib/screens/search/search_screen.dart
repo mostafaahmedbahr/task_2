@@ -115,9 +115,9 @@ class SearchScreen extends StatelessWidget {
                                       color: AppColors.whiteColor,
                                     ),
                                   ),
-                                  Text(
-                                    searchCubit.booksListSearchResults[index].bookPrice,
-                                    style:const TextStyle(
+                                  const Text(
+                                    "Free",
+                                    style:TextStyle(
                                       fontSize: 16,
                                       color: AppColors.whiteColor,
                                     ),

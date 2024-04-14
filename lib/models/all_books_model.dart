@@ -3,11 +3,12 @@ class AllBooksModel{
   final String bookName;
   final String bookAuthorName;
   final String bookType;
-  final String bookPrice;
   final String bookImage;
   final String bookUrl;
   final String bookRate;
   final String des;
+  final String bookPagesNumber;
+  final String bookResource;
 
 
   AllBooksModel({
@@ -16,10 +17,11 @@ class AllBooksModel{
     required this.bookAuthorName,
     required this.bookType,
     required this.bookImage,
-    required this.bookPrice,
     required this.bookUrl,
     required this.bookRate,
     required this.des,
+    required this.bookPagesNumber,
+    required this.bookResource,
   });
 
 
@@ -29,11 +31,12 @@ class AllBooksModel{
       bookId: map['bookId']?? '',
       bookImage: map['bookImage']?? '',
       bookType: map['bookType']?? '',
-      bookPrice: map['bookPrice']?? '',
       bookName: map['bookName']?? '',
       bookUrl: map['bookUrl']?? '',
       bookRate: map['bookRate']?? '',
       des: map['des']?? '',
+      bookResource: map['bookResource']?? '',
+      bookPagesNumber: map['bookPagesNumber']?? '',
     );
   }
 }

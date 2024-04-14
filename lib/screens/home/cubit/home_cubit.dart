@@ -21,8 +21,6 @@ class HomeCubit extends Cubit<HomeStates> {
     try {
       QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('AllBooks').get();
       List<AllBooksModel> allBooksList = querySnapshot.docs.map((doc) => AllBooksModel.fromMap(doc.data() as Map<String, dynamic>)).toList();
-
-
       bestsellersList = allBooksList.where((book) => book.bookType == 'Bestsellers').toList();
       recentlyViewedList = allBooksList.where((book) => book.bookType == 'RecentlyViewed').toList();
       ourTopPicksList = allBooksList.where((book) => book.bookType == 'OurTopPicks').toList();

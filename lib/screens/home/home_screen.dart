@@ -3,6 +3,7 @@ import 'package:conditional_builder_null_safety/conditional_builder_null_safety.
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:task_2/core/utils/app_nav.dart';
+import 'package:task_2/screens/all_books/all_books_screen.dart';
 import 'package:task_2/widgets/custom_Loading.dart';
 
 import '../book_details/book_details_screen.dart';
@@ -42,7 +43,10 @@ class HomeScreen extends StatelessWidget {
               leading: const Icon(Icons.book),
               title: const Text('Our Books'),
               onTap: () {
-                Navigator.pop(context);
+                AppNav.customNavigator(context: context,
+                    screen: AllBooksScreen(),
+                    finish: false,
+                );
               },
             ),
             ListTile(
@@ -96,7 +100,7 @@ class HomeScreen extends StatelessWidget {
                           ),
                           const SizedBox(height: 20,),
                           SizedBox(
-                            height: 150,
+                            height: 170,
                             child: ListView.separated(
                               scrollDirection: Axis.horizontal,
                               itemBuilder: (context , index ){
@@ -104,9 +108,11 @@ class HomeScreen extends StatelessWidget {
                                   onTap: (){
                                     AppNav.customNavigator(context: context,
                                       screen: BookDetailsScreen(
+                                        booksModel:HomeCubit.get(context).ourTopPicksList[index] ,
+                                          id: HomeCubit.get(context).ourTopPicksList[index].bookId,
                                           name: HomeCubit.get(context).ourTopPicksList[index].bookName,
                                           image:HomeCubit.get(context).ourTopPicksList[index].bookImage,
-                                          price: HomeCubit.get(context).ourTopPicksList[index].bookPrice,
+                                        price: "Free",
                                           rate:HomeCubit.get(context).ourTopPicksList[index].bookRate,
                                           authorName: HomeCubit.get(context).ourTopPicksList[index].bookAuthorName,
                                           url: HomeCubit.get(context).ourTopPicksList[index].bookUrl,
@@ -116,18 +122,25 @@ class HomeScreen extends StatelessWidget {
                                       finish: false,
                                     );
                                   },
-                                  child: SizedBox(
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: Colors.green.withOpacity(.4),
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
                                     width: 100,
                                     child: Column(
                                       children: [
-                                        CachedNetworkImage(
-                                          height: 100,
-                                          fit: BoxFit.cover,
-                                          width: 100,
-                                          imageUrl: HomeCubit.get(context).ourTopPicksList[index].bookImage,
-                                          progressIndicatorBuilder: (context, url, downloadProgress) =>
-                                              CircularProgressIndicator(value: downloadProgress.progress),
-                                          errorWidget: (context, url, error) => const Icon(Icons.error),
+                                        ClipRRect(
+                                          borderRadius: BorderRadius.circular(10),
+                                          child: CachedNetworkImage(
+                                            height: 100,
+                                            fit: BoxFit.cover,
+                                            width: 100,
+                                            imageUrl: HomeCubit.get(context).ourTopPicksList[index].bookImage,
+                                            progressIndicatorBuilder: (context, url, downloadProgress) =>
+                                                CircularProgressIndicator(value: downloadProgress.progress),
+                                            errorWidget: (context, url, error) => const Icon(Icons.error),
+                                          ),
                                         ),
                                         Expanded(
                                           child: Text(HomeCubit.get(context).ourTopPicksList[index].bookName,
@@ -190,7 +203,7 @@ class HomeScreen extends StatelessWidget {
                           ),
                           const SizedBox(height: 20,),
                           SizedBox(
-                            height: 150,
+                            height: 170,
                             child: ListView.separated(
                               scrollDirection: Axis.horizontal,
                               itemBuilder: (context , index ){
@@ -198,9 +211,11 @@ class HomeScreen extends StatelessWidget {
                                   onTap: (){
                                     AppNav.customNavigator(context: context,
                                       screen: BookDetailsScreen(
+                                        booksModel: HomeCubit.get(context).bestsellersList[index],
+                                        id: HomeCubit.get(context).bestsellersList[index].bookId,
                                         name: HomeCubit.get(context).bestsellersList[index].bookName,
                                         image:HomeCubit.get(context).bestsellersList[index].bookImage,
-                                        price: HomeCubit.get(context).bestsellersList[index].bookPrice,
+                                        price: "Free",
                                         rate:HomeCubit.get(context).bestsellersList[index].bookRate,
                                         authorName: HomeCubit.get(context).bestsellersList[index].bookAuthorName,
                                         url: HomeCubit.get(context).bestsellersList[index].bookUrl,
@@ -210,18 +225,28 @@ class HomeScreen extends StatelessWidget {
                                       finish: false,
                                     );
                                   },
-                                  child: SizedBox(
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: Colors.green.withOpacity(.4),
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
                                     width: 100,
                                     child: Column(
                                       children: [
-                                        CachedNetworkImage(
-                                          height: 100,
-                                          fit: BoxFit.cover,
-                                          width: 100,
-                                          imageUrl: HomeCubit.get(context).bestsellersList[index].bookImage,
-                                          progressIndicatorBuilder: (context, url, downloadProgress) =>
-                                              CircularProgressIndicator(value: downloadProgress.progress),
-                                          errorWidget: (context, url, error) => const Icon(Icons.error),
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: ClipRRect(
+                                            borderRadius: BorderRadius.circular(10),
+                                            child: CachedNetworkImage(
+                                              height: 100,
+                                              fit: BoxFit.cover,
+                                              width: 100,
+                                              imageUrl: HomeCubit.get(context).bestsellersList[index].bookImage,
+                                              progressIndicatorBuilder: (context, url, downloadProgress) =>
+                                                  CircularProgressIndicator(value: downloadProgress.progress),
+                                              errorWidget: (context, url, error) => const Icon(Icons.error),
+                                            ),
+                                          ),
                                         ),
                                         Expanded(
                                           child: Text(HomeCubit.get(context).bestsellersList[index].bookName,
@@ -285,7 +310,7 @@ class HomeScreen extends StatelessWidget {
                           ),
                           const SizedBox(height: 20,),
                           SizedBox(
-                            height: 150,
+                            height: 170,
                             child: ListView.separated(
                               scrollDirection: Axis.horizontal,
                               itemBuilder: (context , index ){
@@ -293,9 +318,11 @@ class HomeScreen extends StatelessWidget {
                                   onTap: (){
                                     AppNav.customNavigator(context: context,
                                       screen: BookDetailsScreen(
+                                        booksModel: HomeCubit.get(context).genresList[index],
+                                        id: HomeCubit.get(context).genresList[index].bookId,
                                         name: HomeCubit.get(context).genresList[index].bookName,
                                         image:HomeCubit.get(context).genresList[index].bookImage,
-                                        price: HomeCubit.get(context).genresList[index].bookPrice,
+                                        price: "Free",
                                         rate:HomeCubit.get(context).genresList[index].bookRate,
                                         authorName: HomeCubit.get(context).genresList[index].bookAuthorName,
                                         url: HomeCubit.get(context).genresList[index].bookUrl,
@@ -305,18 +332,28 @@ class HomeScreen extends StatelessWidget {
                                       finish: false,
                                     );
                                   },
-                                  child: SizedBox(
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: Colors.green.withOpacity(.4),
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
                                     width: 200,
                                     child: Column(
                                       children: [
-                                        CachedNetworkImage(
-                                          height: 150,
-                                          fit: BoxFit.cover,
-                                          width: 250,
-                                          imageUrl: HomeCubit.get(context).genresList[index].bookImage,
-                                          progressIndicatorBuilder: (context, url, downloadProgress) =>
-                                              CircularProgressIndicator(value: downloadProgress.progress),
-                                          errorWidget: (context, url, error) => const Icon(Icons.error),
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: ClipRRect(
+                                            borderRadius: BorderRadius.circular(10),
+                                            child: CachedNetworkImage(
+                                              height: 150,
+                                              fit: BoxFit.cover,
+                                              width: 250,
+                                              imageUrl: HomeCubit.get(context).genresList[index].bookImage,
+                                              progressIndicatorBuilder: (context, url, downloadProgress) =>
+                                                  CircularProgressIndicator(value: downloadProgress.progress),
+                                              errorWidget: (context, url, error) => const Icon(Icons.error),
+                                            ),
+                                          ),
                                         ),
                                       ],
                                     ),
@@ -362,7 +399,7 @@ class HomeScreen extends StatelessWidget {
                         ),
                         const SizedBox(height: 20,),
                         SizedBox(
-                          height: 150,
+                          height: 170,
                           child: ListView.separated(
                             scrollDirection: Axis.horizontal,
                             itemBuilder: (context , index ){
@@ -370,9 +407,11 @@ class HomeScreen extends StatelessWidget {
                                 onTap: (){
                                   AppNav.customNavigator(context: context,
                                       screen: BookDetailsScreen(
+                                        booksModel: HomeCubit.get(context).bestsellersList[index],
+                                        id: HomeCubit.get(context).bestsellersList[index].bookId,
                                         name: HomeCubit.get(context).bestsellersList[index].bookName,
                                         image:HomeCubit.get(context).bestsellersList[index].bookImage,
-                                        price: HomeCubit.get(context).bestsellersList[index].bookPrice,
+                                        price: "Free",
                                         rate:HomeCubit.get(context).bestsellersList[index].bookRate,
                                         authorName: HomeCubit.get(context).bestsellersList[index].bookAuthorName,
                                         url: HomeCubit.get(context).bestsellersList[index].bookUrl,
@@ -382,36 +421,46 @@ class HomeScreen extends StatelessWidget {
                                       finish: false,
                                   );
                                 },
-                                child: SizedBox(
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.green.withOpacity(.4),
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
                                   width: 100,
-                                  child: Column(
-                                    children: [
-                                      CachedNetworkImage(
-                                        height: 100,
-                                        fit: BoxFit.cover,
-                                        width: 100,
-                                        imageUrl: HomeCubit.get(context).bestsellersList[index].bookImage,
-                                        progressIndicatorBuilder: (context, url, downloadProgress) =>
-                                            CircularProgressIndicator(value: downloadProgress.progress),
-                                        errorWidget: (context, url, error) => const Icon(Icons.error),
-                                      ),
-                                      Expanded(
-                                        child: Text(HomeCubit.get(context).recentlyViewedList[index].bookName,
-                                          style: const TextStyle(
-                                            fontSize: 18,
-                                            overflow: TextOverflow.ellipsis,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Column(
+                                      children: [
+                                        ClipRRect(
+                                          borderRadius: BorderRadius.circular(10),
+                                          child: CachedNetworkImage(
+                                            height: 100,
+                                            fit: BoxFit.cover,
+                                            width: 100,
+                                            imageUrl: HomeCubit.get(context).bestsellersList[index].bookImage,
+                                            progressIndicatorBuilder: (context, url, downloadProgress) =>
+                                                CircularProgressIndicator(value: downloadProgress.progress),
+                                            errorWidget: (context, url, error) => const Icon(Icons.error),
+                                          ),
+                                        ),
+                                        Expanded(
+                                          child: Text(HomeCubit.get(context).recentlyViewedList[index].bookName,
+                                            style: const TextStyle(
+                                              fontSize: 18,
+                                              overflow: TextOverflow.ellipsis,
 
-                                          ),),
-                                      ),
-                                      Expanded(
-                                        child: Text(
-                                          HomeCubit.get(context).recentlyViewedList[index].bookAuthorName ,
-                                          style: const TextStyle(
-                                            fontSize: 16,
-                                            overflow: TextOverflow.ellipsis,
-                                          ),),
-                                      ),
-                                    ],
+                                            ),),
+                                        ),
+                                        Expanded(
+                                          child: Text(
+                                            HomeCubit.get(context).recentlyViewedList[index].bookAuthorName ,
+                                            style: const TextStyle(
+                                              fontSize: 16,
+                                              overflow: TextOverflow.ellipsis,
+                                            ),),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
                               );
