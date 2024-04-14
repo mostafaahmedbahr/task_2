@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../core/colors.dart';
+import '../../core/utils/app_nav.dart';
 import '../../widgets/shimmer_loading.dart';
+import '../book_details/book_details_screen.dart';
 import 'cubit/search_cubit.dart';
 import 'cubit/search_states.dart';
 
@@ -58,7 +60,21 @@ class SearchScreen extends StatelessWidget {
                     return
                       InkWell(
                         onTap: (){
-          
+                          AppNav.customNavigator(context: context,
+                            screen: BookDetailsScreen(
+                              booksModel: SearchCubit.get(context).booksListSearchResults[index],
+                              id: SearchCubit.get(context).booksListSearchResults[index].bookId,
+                              name: SearchCubit.get(context).booksListSearchResults[index].bookName,
+                              image:SearchCubit.get(context).booksListSearchResults[index].bookImage,
+                              price: "Free",
+                              rate:SearchCubit.get(context).booksListSearchResults[index].bookRate,
+                              authorName: SearchCubit.get(context).booksListSearchResults[index].bookAuthorName,
+                              url: SearchCubit.get(context).booksListSearchResults[index].bookUrl,
+                              des: SearchCubit.get(context).booksListSearchResults[index].des,
+                              favOrNot: true,
+                            ),
+                            finish: false,
+                          );
                         },
                         child: Container(
                           height: 150,
