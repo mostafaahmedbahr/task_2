@@ -1,9 +1,18 @@
  import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:task_2/models/all_books_model.dart';
+import 'package:task_2/screens/fav/cubit/cubit.dart';
+import 'package:task_2/screens/fav/cubit/states.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../core/sh.dart';
+
 class BookDetailsScreen extends StatelessWidget {
+  final AllBooksModel booksModel;
   final String name;
+  final String id;
   final String image;
   final String price;
   final String rate;
@@ -11,11 +20,55 @@ class BookDetailsScreen extends StatelessWidget {
   final String url;
   final String des;
   final bool favOrNot;
-  const BookDetailsScreen({super.key, required this.name, required this.image, required this.price, required this.rate, required this.authorName, required this.url, required this.favOrNot, required this.des});
+  const BookDetailsScreen({super.key, required this.name, required this.image, required this.price, required this.rate, required this.authorName, required this.url, required this.favOrNot, required this.des, required this.booksModel, required this.id});
   
 
   @override
   Widget build(BuildContext context) {
+    print(id);
+    print(booksModel.bookId);
+    print("BookDetailsScreen");
+    print(SharedPreferencesHelper.getData(key: "userId"));
+    void addToFavorites(AllBooksModel booksModel, String userId , FavCubit favCubit) async {
+      try {
+        await FirebaseFirestore.instance.collection('BookAppUsers')
+            .doc(userId)
+            .collection('favorites')
+            .doc(id)
+            .set({
+          "bookImage" : booksModel.bookImage ,
+          "bookId" : id ,
+          "bookName" :booksModel.bookName ,
+          "bookAuthorName" :booksModel.bookAuthorName ,
+          "bookType" :booksModel.bookType ,
+          "bookUrl" :booksModel.bookUrl ,
+          "bookResource" : booksModel.bookResource ,
+          "bookPagesNumber" : booksModel.bookPagesNumber ,
+          "bookRate" : booksModel.bookRate ,
+          "des" : booksModel.des ,
+          ///////
+        });
+        print('Product added to favorites successfully');
+        favCubit.getFavoriteBooks(userId);
+      } catch (error) {
+        print('Error adding product to favorites: $error');
+      }
+    }
+    void removeFromFavorites(String productId, String userId , FavCubit favCubit) async {
+      try {
+        await FirebaseFirestore.instance
+            .collection('BookAppUsers')
+            .doc(userId)
+            .collection('favorites')
+            .doc(productId)
+            .delete();
+        print('Product removed from favorites successfully');
+        favCubit.getFavoriteBooks(userId);
+      } catch (error) {
+        print('Error removing product from favorites: $error');
+      }
+    }
+
     final Uri _url = Uri.parse("$url");
     Future<void> _launchUrl() async {
       if (!await launchUrl(_url)) {
@@ -45,19 +98,39 @@ class BookDetailsScreen extends StatelessWidget {
                     errorWidget: (context, url, error) => const Icon(Icons.error),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Colors.white,
-                    ),
-                    child: IconButton(
-                        onPressed: (){},
-                        icon: const Icon(Icons.favorite,color: Colors.red,),
-                    ),
-                  ),
+                BlocBuilder<FavCubit, FavStates>(
+                  builder: (context, state) {
+                    return Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Colors.white,
+                        ),
+                        child: IconButton(
+                          onPressed: () {
+                            print(id);
+                            print("mostafa print id ");
+                            var favCubit = FavCubit.get(context);
+                            // تحديد إذا كان المنتج موجودًا في المفضلة أو لا
+                            var isFav = favCubit.isFavorite(id);
+                            // إضافة المنتج إلى المفضلة إذا لم يكن موجودًا، وإلاّ قم بإزالته
+                            if (!isFav) {
+                              addToFavorites(booksModel, SharedPreferencesHelper.getData(key: "userId") , favCubit);
+                            } else {
+                              removeFromFavorites(id, SharedPreferencesHelper.getData(key: "userId") , favCubit);
+                            }
+                          },
+                          icon: Icon(
+                            Icons.favorite,
+                            color: FavCubit.get(context).isFavorite(id) ? Colors.red : Colors.grey, // تحديد لون الأيقونة بناءً على الحالة
+                          ),
+                        ),
+                      ),
+                    );
+                  },
                 ),
+
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 70,vertical: 10),
                   child: Container(

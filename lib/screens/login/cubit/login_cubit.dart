@@ -4,7 +4,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
- import 'login_states.dart';
+ import '../../../core/sh.dart';
+import 'login_states.dart';
 
 class LoginCubit extends Cubit<LoginStates> {
   LoginCubit() : super(LoginInitState());
@@ -34,7 +35,7 @@ class LoginCubit extends Cubit<LoginStates> {
       emit(LoginSuccessState());
       log(value.user!.uid);
       // ProfileCubit.get(context).getUserById(value.user!.uid);
-      // SharedPreferencesHelper.saveData(key: "userId", value: value.user?.uid);
+      SharedPreferencesHelper.saveData(key: "userId", value: value.user?.uid);
       log("success");
     }).catchError((error)
     {
