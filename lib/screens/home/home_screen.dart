@@ -49,13 +49,13 @@ class HomeScreen extends StatelessWidget {
                 );
               },
             ),
-            ListTile(
-              leading: const Icon(Icons.settings_input_antenna_sharp),
-              title: const Text('Our Research'),
-              onTap: () {
-                Navigator.pop(context);
-              },
-            ),
+            // ListTile(
+            //   leading: const Icon(Icons.settings_input_antenna_sharp),
+            //   title: const Text('Our Research'),
+            //   onTap: () {
+            //     Navigator.pop(context);
+            //   },
+            // ),
     ],
         ),
       ),

@@ -1,10 +1,15 @@
  import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:task_2/models/all_books_model.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../core/sh.dart';
 import '../../core/utils/app_nav.dart';
 import '../book_details/book_details_screen.dart';
+import '../fav/cubit/cubit.dart';
+import '../fav/cubit/states.dart';
 
 class SeeAllScreen extends StatelessWidget {
   final String type;
@@ -93,16 +98,78 @@ class SeeAllScreen extends StatelessWidget {
                           const SizedBox(height: 10,),
                           Row(
                             children: [
-                              InkWell(
-                                onTap : (){},
-                                child: Container(
-                                  padding: const EdgeInsets.all(4.0),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    color: Colors.white,
-                                  ),
-                                  child:  const Icon(Icons.favorite,color: Colors.red,),
-                                ),
+                              BlocBuilder<FavCubit, FavStates>(
+                                builder: (context, state) {
+                                  void addToFavorites(
+                                      AllBooksModel booksModel,
+                                      String userId ,
+                                      FavCubit favCubit) async
+                                  {
+                                    try {
+                                      await FirebaseFirestore.instance.collection('BookAppUsers')
+                                          .doc(userId)
+                                          .collection('favorites')
+                                          .doc(booksList[index].bookId)
+                                          .set({
+                                        "bookImage" : booksList[index].bookImage ,
+                                        "bookId" : booksList[index].bookId ,
+                                        "bookName" : booksList[index].bookName ,
+                                        "bookAuthorName" :booksList[index].bookAuthorName ,
+                                        "bookType" :booksList[index].bookType ,
+                                        "bookUrl" :booksList[index].bookUrl ,
+                                        "bookResource" : booksList[index].bookResource ,
+                                        "bookPagesNumber" : booksList[index].bookPagesNumber ,
+                                        "bookRate" : booksList[index].bookRate ,
+                                        "des" : booksList[index].des ,
+                                        ///////
+                                      });
+                                      print('Product added to favorites successfully');
+                                      favCubit.getFavoriteBooks(userId);
+                                    } catch (error) {
+                                      print('Error adding product to favorites: $error');
+                                    }
+                                  }
+                                  void removeFromFavorites(String productId, String userId , FavCubit favCubit) async {
+                                    try {
+                                      await FirebaseFirestore.instance
+                                          .collection('BookAppUsers')
+                                          .doc(userId)
+                                          .collection('favorites')
+                                          .doc(productId)
+                                          .delete();
+                                      print('Product removed from favorites successfully');
+                                      favCubit.getFavoriteBooks(userId);
+                                    } catch (error) {
+                                      print('Error removing product from favorites: $error');
+                                    }
+                                  }
+                                  return Padding(
+                                    padding: const EdgeInsets.all(10.0),
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
+                                        color: Colors.white,
+                                      ),
+                                      child: IconButton(
+                                        onPressed: () {
+                                          var favCubit = FavCubit.get(context);
+                                          // تحديد إذا كان المنتج موجودًا في المفضلة أو لا
+                                          var isFav = favCubit.isFavorite(booksList[index].bookId);
+                                          // إضافة المنتج إلى المفضلة إذا لم يكن موجودًا، وإلاّ قم بإزالته
+                                          if (!isFav) {
+                                            addToFavorites(booksList[index], SharedPreferencesHelper.getData(key: "userId") , favCubit);
+                                          } else {
+                                            removeFromFavorites(booksList[index].bookId, SharedPreferencesHelper.getData(key: "userId") , favCubit);
+                                          }
+                                        },
+                                        icon: Icon(
+                                          Icons.favorite,
+                                          color: FavCubit.get(context).isFavorite(booksList[index].bookId ,) ? Colors.red : Colors.grey, // تحديد لون الأيقونة بناءً على الحالة
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                },
                               ),
                               const SizedBox(width: 10,),
                               InkWell(
