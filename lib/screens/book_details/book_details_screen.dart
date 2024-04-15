@@ -21,53 +21,53 @@ class BookDetailsScreen extends StatelessWidget {
   final String des;
   final bool favOrNot;
   const BookDetailsScreen({super.key, required this.name, required this.image, required this.price, required this.rate, required this.authorName, required this.url, required this.favOrNot, required this.des, required this.booksModel, required this.id});
-  
 
+  void addToFavorites(AllBooksModel booksModel, String userId , FavCubit favCubit) async {
+    try {
+      await FirebaseFirestore.instance.collection('BookAppUsers')
+          .doc(userId)
+          .collection('favorites')
+          .doc(id)
+          .set({
+        "bookImage" : booksModel.bookImage ,
+        "bookId" : id ,
+        "bookName" :booksModel.bookName ,
+        "bookAuthorName" :booksModel.bookAuthorName ,
+        "bookType" :booksModel.bookType ,
+        "bookUrl" :booksModel.bookUrl ,
+        "bookResource" : booksModel.bookResource ,
+        "bookPagesNumber" : booksModel.bookPagesNumber ,
+        "bookRate" : booksModel.bookRate ,
+        "des" : booksModel.des ,
+        ///////
+      });
+      print('Product added to favorites successfully');
+      favCubit.getFavoriteBooks(userId);
+    } catch (error) {
+      print('Error adding product to favorites: $error');
+    }
+  }
+  void removeFromFavorites(String productId, String userId , FavCubit favCubit) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection('BookAppUsers')
+          .doc(userId)
+          .collection('favorites')
+          .doc(productId)
+          .delete();
+      print('Product removed from favorites successfully');
+      favCubit.getFavoriteBooks(userId);
+    } catch (error) {
+      print('Error removing product from favorites: $error');
+    }
+  }
   @override
   Widget build(BuildContext context) {
     print(id);
     print(booksModel.bookId);
     print("BookDetailsScreen");
     print(SharedPreferencesHelper.getData(key: "userId"));
-    void addToFavorites(AllBooksModel booksModel, String userId , FavCubit favCubit) async {
-      try {
-        await FirebaseFirestore.instance.collection('BookAppUsers')
-            .doc(userId)
-            .collection('favorites')
-            .doc(id)
-            .set({
-          "bookImage" : booksModel.bookImage ,
-          "bookId" : id ,
-          "bookName" :booksModel.bookName ,
-          "bookAuthorName" :booksModel.bookAuthorName ,
-          "bookType" :booksModel.bookType ,
-          "bookUrl" :booksModel.bookUrl ,
-          "bookResource" : booksModel.bookResource ,
-          "bookPagesNumber" : booksModel.bookPagesNumber ,
-          "bookRate" : booksModel.bookRate ,
-          "des" : booksModel.des ,
-          ///////
-        });
-        print('Product added to favorites successfully');
-        favCubit.getFavoriteBooks(userId);
-      } catch (error) {
-        print('Error adding product to favorites: $error');
-      }
-    }
-    void removeFromFavorites(String productId, String userId , FavCubit favCubit) async {
-      try {
-        await FirebaseFirestore.instance
-            .collection('BookAppUsers')
-            .doc(userId)
-            .collection('favorites')
-            .doc(productId)
-            .delete();
-        print('Product removed from favorites successfully');
-        favCubit.getFavoriteBooks(userId);
-      } catch (error) {
-        print('Error removing product from favorites: $error');
-      }
-    }
+
 
     final Uri _url = Uri.parse("$url");
     Future<void> _launchUrl() async {

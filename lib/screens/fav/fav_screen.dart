@@ -113,8 +113,8 @@ class FavScreen extends StatelessWidget {
                                       Expanded(
                                         child: Column(
                                           children: [
-                                            Text("resource : "),
-                                            Text("paper number : "),
+                                            Text("resource : ${favCubit.favoriteBooksList[index].bookResource}"),
+                                            Text("paper number : ${favCubit.favoriteBooksList[index].bookPagesNumber}"),
                                             Text("author : ${favCubit.favoriteBooksList[index].bookAuthorName}"),
                                           ],
                                         ),

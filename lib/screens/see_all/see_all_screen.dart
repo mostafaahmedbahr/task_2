@@ -87,8 +87,8 @@ class SeeAllScreen extends StatelessWidget {
                               Expanded(
                                 child: Column(
                                   children: [
-                                    Text("resource : "),
-                                    Text("paper number : "),
+                                    Text("resource : ${booksList[index].bookResource}"),
+                                    Text("paper number : ${booksList[index].bookPagesNumber}"),
                                     Text("author : ${booksList[index].bookAuthorName}"),
                                   ],
                                 ),

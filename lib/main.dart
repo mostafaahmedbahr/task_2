@@ -6,9 +6,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:responsive_framework/responsive_wrapper.dart';
 import 'package:responsive_framework/utils/scroll_behavior.dart';
 import 'package:task_2/core/sh.dart';
+import 'package:task_2/firebase_options.dart';
 import 'package:task_2/screens/all_books/cubit/cubit.dart';
 import 'package:task_2/screens/fav/cubit/cubit.dart';
 import 'package:task_2/screens/home/cubit/home_cubit.dart';
+import 'package:task_2/screens/home/home_screen.dart';
 import 'package:task_2/screens/layout/cubit/layout_cubit.dart';
 import 'package:task_2/screens/login/cubit/login_cubit.dart';
 import 'package:task_2/screens/register/cubit/register_cubit.dart';
@@ -19,12 +21,9 @@ import 'package:task_2/screens/splash/splash_screen.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SharedPreferencesHelper.init();
-  if (Platform.isIOS) {
-    await Firebase.initializeApp();
-  } else if(Platform.isAndroid) {
-    await Firebase.initializeApp();
-  }
-   log("0"*30);
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
 }
 
@@ -48,7 +47,7 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: SplashScreen(),
+        home: SharedPreferencesHelper.getData(key: "userId")!=null?const HomeScreen(): SplashScreen(),
         builder: (context, child) => ResponsiveWrapper.builder(
           BouncingScrollWrapper.builder(context, child!),
           maxWidth: 1200,
