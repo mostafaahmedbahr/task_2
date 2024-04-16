@@ -12,6 +12,7 @@ import 'package:task_2/screens/fav/cubit/cubit.dart';
 import 'package:task_2/screens/home/cubit/home_cubit.dart';
 import 'package:task_2/screens/home/home_screen.dart';
 import 'package:task_2/screens/layout/cubit/layout_cubit.dart';
+import 'package:task_2/screens/layout/layout_screen.dart';
 import 'package:task_2/screens/login/cubit/login_cubit.dart';
 import 'package:task_2/screens/register/cubit/register_cubit.dart';
 import 'package:task_2/screens/search/cubit/search_cubit.dart';
@@ -47,7 +48,7 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: SharedPreferencesHelper.getData(key: "userId")!=null?const HomeScreen(): SplashScreen(),
+        home:  SplashScreen(),
         builder: (context, child) => ResponsiveWrapper.builder(
           BouncingScrollWrapper.builder(context, child!),
           maxWidth: 1200,

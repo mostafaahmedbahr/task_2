@@ -20,7 +20,7 @@ class BookDetailsScreen extends StatelessWidget {
   final String url;
   final String des;
   final bool favOrNot;
-  const BookDetailsScreen({super.key, required this.name, required this.image, required this.price, required this.rate, required this.authorName, required this.url, required this.favOrNot, required this.des, required this.booksModel, required this.id});
+  BookDetailsScreen({super.key, required this.name, required this.image, required this.price, required this.rate, required this.authorName, required this.url, required this.favOrNot, required this.des, required this.booksModel, required this.id});
 
   void addToFavorites(AllBooksModel booksModel, String userId , FavCubit favCubit) async {
     try {
@@ -61,20 +61,15 @@ class BookDetailsScreen extends StatelessWidget {
       print('Error removing product from favorites: $error');
     }
   }
+  Future<void> _launchUrl() async {
+    if (!await launchUrl(Uri.parse("$url"))) {
+      throw Exception('Could not launch $url');
+    }
+  }
   @override
   Widget build(BuildContext context) {
-    print(id);
-    print(booksModel.bookId);
-    print("BookDetailsScreen");
-    print(SharedPreferencesHelper.getData(key: "userId"));
 
 
-    final Uri _url = Uri.parse("$url");
-    Future<void> _launchUrl() async {
-      if (!await launchUrl(_url)) {
-        throw Exception('Could not launch $_url');
-      }
-    }
     return SafeArea(child: Scaffold(
       appBar: AppBar(
         title: Text(name),

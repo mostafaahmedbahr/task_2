@@ -98,8 +98,8 @@ class AllBooksScreen extends StatelessWidget {
                                       Expanded(
                                         child: Column(
                                           children: [
-                                            Text("resource : "),
-                                            Text("paper number : "),
+                                            Text("resource : ${allBooksCubit.allBooksList[index].bookResource}"),
+                                            Text("paper number : ${allBooksCubit.allBooksList[index].bookPagesNumber}"),
                                             Text("author : ${allBooksCubit.allBooksList[index].bookAuthorName}"),
                                           ],
                                         ),

@@ -8,6 +8,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 
   import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:task_2/core/sh.dart';
  import 'package:task_2/screens/register/cubit/register_states.dart';
  import 'package:uuid/uuid.dart';
 
@@ -35,6 +36,8 @@ void register({
     email: email,
     password: password,
   ).then((value) {
+    SharedPreferencesHelper.saveData(key: "userId", value: value.user?.uid);
+
     createUsers(
       groupCode: groupCode,
       email: email,

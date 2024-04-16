@@ -12,8 +12,20 @@ import '../../core/sh.dart';
 import '../../core/utils/app_nav.dart';
 import '../book_details/book_details_screen.dart';
 
-class FavScreen extends StatelessWidget {
+class FavScreen extends StatefulWidget {
   const FavScreen({super.key});
+
+  @override
+  State<FavScreen> createState() => _FavScreenState();
+}
+
+class _FavScreenState extends State<FavScreen> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    FavCubit.get(context).getFavoriteBooks(SharedPreferencesHelper.getData(key: "userId"));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +41,7 @@ class FavScreen extends StatelessWidget {
           void removeFromFavorites(String productId, String userId , FavCubit favCubit) async {
             try {
               await FirebaseFirestore.instance
-                  .collection('users')
+                  .collection('BookAppUsers')
                   .doc(userId)
                   .collection('favorites')
                   .doc(productId)

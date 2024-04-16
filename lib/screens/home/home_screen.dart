@@ -19,9 +19,10 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
+        title: Text("Home"),
+        centerTitle: true,
         leading: const SizedBox.shrink(),
       ),
       endDrawer: Drawer(
@@ -91,7 +92,7 @@ class HomeScreen extends StatelessWidget {
               return Padding(
                 padding: const EdgeInsets.all(20.0),
                 child: RefreshIndicator(
-                  onRefresh: ()async{
+                  onRefresh: () async {
                     context.read<HomeCubit>().getAllBooksDataInHome();
                   },
                   child: ListView(
@@ -170,15 +171,17 @@ class HomeScreen extends StatelessWidget {
                                               height: 100,
                                               fit: BoxFit.cover,
                                               width: 120,
-                                              imageUrl: HomeCubit.get(context).ourTopPicksList[index].bookImage,
+                                              imageUrl:
+                                                  HomeCubit.get(context).ourTopPicksList[index].bookImage,
                                               progressIndicatorBuilder: (context, url, downloadProgress) =>
-                                                  CircularProgressIndicator(value: downloadProgress.progress),
+                                                  CircularProgressIndicator(
+                                                    strokeCap: StrokeCap.square,
+                                                    value: downloadProgress.progress,
+                                                  ),
                                               errorWidget: (context, url, error) => const Icon(Icons.error),
                                             ),
                                           ),
-                                          SizedBox(
-                                            height: 10,
-                                          ),
+                                          const SizedBox(height: 10),
                                           Padding(
                                             padding: const EdgeInsetsDirectional.symmetric(horizontal: 10),
                                             child: Text(
@@ -304,7 +307,6 @@ class HomeScreen extends StatelessWidget {
                                             ),
                                           ),
                                           const SizedBox(height: 10),
-
                                           Padding(
                                             padding: const EdgeInsetsDirectional.symmetric(horizontal: 10),
                                             child: Text(
@@ -423,7 +425,8 @@ class HomeScreen extends StatelessWidget {
                                                 width: 250,
                                                 imageUrl: HomeCubit.get(context).genresList[index].bookImage,
                                                 progressIndicatorBuilder: (context, url, downloadProgress) =>
-                                                    CircularProgressIndicator(value: downloadProgress.progress),
+                                                    CircularProgressIndicator(
+                                                        value: downloadProgress.progress),
                                                 errorWidget: (context, url, error) => const Icon(Icons.error),
                                               ),
                                             ),
@@ -542,7 +545,6 @@ class HomeScreen extends StatelessWidget {
                                             ),
                                           ),
                                           const SizedBox(height: 5),
-
                                           Padding(
                                             padding: const EdgeInsetsDirectional.symmetric(horizontal: 10),
                                             child: Text(

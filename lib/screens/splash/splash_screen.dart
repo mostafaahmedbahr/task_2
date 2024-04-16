@@ -1,4 +1,6 @@
  import 'package:flutter/material.dart';
+import 'package:task_2/core/sh.dart';
+import 'package:task_2/screens/layout/layout_screen.dart';
 import '../../core/utils/app_nav.dart';
  import '../on_boarding/on_boarding_screen.dart';
 
@@ -27,7 +29,7 @@ class _SplashScreenState extends State<SplashScreen>
   void navigateToAfterSplash() {
     Future.delayed(const Duration(seconds: 3), () {
       AppNav.customNavigator(context: context,
-          screen: const OnBoardingScreen(),
+          screen: SharedPreferencesHelper.getData(key: "userId")!=null?const LayOutScreen():const OnBoardingScreen(),
           finish: true);
     });
   }
